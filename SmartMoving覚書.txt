@@ -1,0 +1,14 @@
+
+ModelBiped
+	|
+	+--	net.smart.render.ModelPlayer
+			|		:モデルの実態を定義するクラス、実際の実装はSmartRenderModelで行われている。
+			|
+			+--	net.smart.moving.render.ModelPlayer
+						:モデルの動きを定義するクラス、実際の挙動はSmartMovingModelで定義されている。
+
+
+
+
+
+
