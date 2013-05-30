@@ -9,7 +9,7 @@ import net.smart.render.ModelRotationRenderer;
 import net.smart.render.RendererData;
 import net.smart.render.SmartRenderModel;
 
-public abstract class MMM_SmartBase extends MMM_ModelBiped {
+public abstract class MMM_SmartBase extends MMM_ModelMultiBase {
 
 	// SmartMovingModel
 //	public IModelPlayer imp;

@@ -1,11 +1,12 @@
 package net.minecraft.src;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.client.Minecraft;
 
-public class mod_PFSL_PlayerFormSkinLoad2 extends BaseMod {
+public class mod_EPS_PlayerFormSkinLoad2 extends BaseMod {
 
 	@MLProp(info = "Required, when there is no PlayerAPI")
 	public static boolean isReplacePlayerControler = true;
@@ -58,17 +59,18 @@ public class mod_PFSL_PlayerFormSkinLoad2 extends BaseMod {
 
 	public static boolean isPlayerAPI = false;
 	public static boolean isRenderPlayerAPI = false;
+	public static Map<String, EPS_EntityCaps> capsMap = new HashMap<String, EPS_EntityCaps>();
 
 
 	public static void Debug(String pMes, Object... pVal) {
 		if (isDebugMessage) {
-			System.out.println(String.format("PFSL-" + pMes, pVal));
+			System.out.println(String.format("PlayerFormSkinLoad-" + pMes, pVal));
 		}
 	}
 
 	@Override
 	public String getVersion() {
-		return "1.5.1-1";
+		return "1.5.2-1";
 	}
 
 	@Override
@@ -78,7 +80,8 @@ public class mod_PFSL_PlayerFormSkinLoad2 extends BaseMod {
 
 	@Override
 	public String getPriorities() {
-		return "required-after:mod_MMM_MMMLib;after:mod_SmartRender";
+//		return "required-after:mod_MMM_MMMLib;after:mod_SmartRender";
+		return "required-after:mod_MMM_MMMLib";
 	}
 
 	@Override
@@ -92,7 +95,7 @@ public class mod_PFSL_PlayerFormSkinLoad2 extends BaseMod {
 			try {
 				Class lclass = MMM_Helper.getNameOfClass("PlayerAPI");
 				Method mes = lclass.getMethod("register", new Class[] { String.class, Class.class });
-				mes.invoke(null, getName(), PFSL_PlayerAPI.class);
+//TODO:				mes.invoke(null, getName(), PFSL_PlayerAPI.class);
 				isPlayerAPI = true;
 				Debug("PlayerAPI Provide.");
 			} catch (Exception e) {
@@ -110,7 +113,7 @@ public class mod_PFSL_PlayerFormSkinLoad2 extends BaseMod {
 //				mes.invoke(null, "Smart Render");
 				// PFSL用のものを追加
 				mes = lclass.getMethod("register", new Class[] { String.class, Class.class });
-				mes.invoke(null, getName(), PFSL_RenderPlayerAPI.class);
+//TODO:				mes.invoke(null, getName(), PFSL_RenderPlayerAPI.class);
 				isRenderPlayerAPI = true;
 				Debug("RenderPlayerAPI Provide.");
 			} catch (Exception e) {
@@ -125,25 +128,33 @@ public class mod_PFSL_PlayerFormSkinLoad2 extends BaseMod {
 			ModLoader.addLocalization((new StringBuilder()).append(s).toString(),
 					(new StringBuilder()).append("Toggle CreativeMode").toString());
 		}
+		String s = "key.pfVisible";
+		ModLoader.registerKey(this, new KeyBinding(s, 24), false);
+		ModLoader.addLocalization(s, "Model Assemble");
 	}
 
 	@Override
 	public void addRenderer(Map map) {
 		// プレーヤーフォルムの置き換え
 		if (isSkinLoad) {
-			map.put(EntityPlayerSP.class, new RenderPlayerFormSkinLoad2());
+			map.put(EntityPlayerSP.class, new EPS_RenderPlayer());
 		}
 	}
 
 	@Override
 	public void keyboardEvent(KeyBinding keybinding) {
-		Minecraft mcGame = ModLoader.getMinecraftInstance();
-		if (mcGame.theWorld != null && !mcGame.theWorld.isRemote
-				&& mcGame.currentScreen == null) {
-			if (mcGame.playerController.isInCreativeMode()) {
-				mcGame.thePlayer.sendChatMessage("/gamemode 0");
-			} else {
-				mcGame.thePlayer.sendChatMessage("/gamemode 1");
+		Minecraft mcGame = MMM_Helper.mc;
+		if (mcGame.theWorld != null && mcGame.currentScreen == null) {
+			if (keybinding.keyDescription == "key.creative") {
+				if (mcGame.playerController.isInCreativeMode()) {
+					mcGame.thePlayer.sendChatMessage("/gamemode 0");
+				} else {
+					mcGame.thePlayer.sendChatMessage("/gamemode 1");
+				}
+			}
+			if (keybinding.keyDescription == "key.pfVisible") {
+				EPS_EntityCaps lcaps = getEntityCaps(mcGame.thePlayer);
+				mcGame.displayGuiScreen(new EPS_GuiVisibleSelect(null, lcaps));
 			}
 		}
 	}
@@ -174,6 +185,18 @@ public class mod_PFSL_PlayerFormSkinLoad2 extends BaseMod {
 			*/
 		}
 		return true;
+	}
+
+	public static EPS_EntityCaps getEntityCaps(EntityPlayer pPlayer) {
+		EPS_EntityCaps lcaps;
+		if (capsMap.containsKey(pPlayer.username)) {
+			lcaps = capsMap.get(pPlayer.username);
+			lcaps.setOwner(pPlayer);
+			return lcaps;
+		}
+		lcaps = new EPS_EntityCaps(pPlayer);
+		capsMap.put(pPlayer.username, lcaps);
+		return lcaps;
 	}
 
 }
