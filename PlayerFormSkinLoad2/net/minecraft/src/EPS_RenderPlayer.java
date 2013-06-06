@@ -63,7 +63,7 @@ public class EPS_RenderPlayer extends RenderPlayer {
 		}
 		modelMain.setEntityCaps(lcaps);
 		modelFATT.setEntityCaps(lcaps);
-		MMM_TextureBox lbox = MMM_TextureManager.getTextureBox("Player_SkinLoad2");
+		MMM_TextureBox lbox = MMM_TextureManager.instance.getTextureBox("Player_SkinLoad2");
 //		MMM_TextureBox lbox = MMM_TextureManager.getTextureBox("Crafter_Steve");
 		if (lbox != null) {
 			lcaps.texture = lbox;

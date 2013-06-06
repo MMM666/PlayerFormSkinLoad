@@ -86,6 +86,8 @@ public class mod_EPS_PlayerFormSkinLoad2 extends BaseMod {
 
 	@Override
 	public void load() {
+		// MMMLibのRevisionチェック
+		MMM_Helper.checkRevision("3");
 		// 前提PlayerAPI
 		// オプションRenderPlayerAPI
 //		ModLoader.setInGUIHook(this, true, false);
