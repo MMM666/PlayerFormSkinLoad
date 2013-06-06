@@ -133,6 +133,6 @@ public class EPS_RenderPlayer extends RenderPlayer {
 	protected void renderSpecials(EntityPlayer par1EntityPlayer, float par2) {
 		// ハードポイントの描画
 		modelMain.renderItems(par1EntityPlayer, this);
-		renderArrowsStuckInEntity(par1EntityPlayer, par2);
+		MMM_Client.renderArrowsStuckInEntity(par1EntityPlayer, par2, this, modelMain.modelInner);
 	}
 }
