@@ -87,7 +87,7 @@ public class mod_EPS_PlayerFormSkinLoad2 extends BaseMod {
 	@Override
 	public void load() {
 		// MMMLibのRevisionチェック
-		MMM_Helper.checkRevision("3");
+		MMM_Helper.checkRevision("5");
 		// 前提PlayerAPI
 		// オプションRenderPlayerAPI
 //		ModLoader.setInGUIHook(this, true, false);
@@ -133,6 +133,11 @@ public class mod_EPS_PlayerFormSkinLoad2 extends BaseMod {
 		String s = "key.pfVisible";
 		ModLoader.registerKey(this, new KeyBinding(s, 24), false);
 		ModLoader.addLocalization(s, "Model Assemble");
+	}
+
+	@Override
+	public void modsLoaded() {
+		MMM_TextureManager.instance.setDefaultTexture(EntityPlayer.class, MMM_TextureManager.instance.getTextureBox("Crafter_Steve"));
 	}
 
 	@Override

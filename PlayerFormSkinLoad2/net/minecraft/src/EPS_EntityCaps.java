@@ -2,12 +2,13 @@ package net.minecraft.src;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Entityのデータ読み取り用のクラス
  * 別にEntityにインターフェース付けてもOK
  */
-public class EPS_EntityCaps implements MMM_IModelCaps {
+public class EPS_EntityCaps implements MMM_IModelCaps, MMM_ITextureEntity {
 
 	protected EntityPlayer owner;
 	private static Map<String, Integer> caps;
@@ -16,8 +17,20 @@ public class EPS_EntityCaps implements MMM_IModelCaps {
 	protected EnumAction actions[] = new EnumAction[2];
 	protected float grounds[] = new float[] {0F, 0F};
 	protected int visible;
-	protected MMM_TextureBox texture;
+//	protected MMM_TextureBox texture;
 	
+	protected int textureIndex[] = new int[] {0, 0};
+	protected MMM_TextureBoxBase textureBox[] = new MMM_TextureBoxBase[2];
+	protected int color;
+	protected boolean contract = true;
+	protected String textures[][] = new String[][] {
+			{"", ""},
+			{"", "", "" ,""},
+			{"", "", "" ,""}
+	};
+
+
+
 	static {
 		caps = new HashMap<String, Integer>();
 		caps.put("isBlocking", caps_isBlocking);
@@ -45,6 +58,9 @@ public class EPS_EntityCaps implements MMM_IModelCaps {
 
 	public EPS_EntityCaps(EntityPlayer pOwner) {
 		owner = pOwner;
+		textureBox[0] = textureBox[1] = MMM_TextureManager.instance.getDefaultTexture(EntityPlayer.class);
+		color = textureBox[0].getRandomContractColor(new Random());
+		setTextureNames();
 	}
 
 	public void setOwner(EntityPlayer pOwner) {
@@ -113,7 +129,7 @@ public class EPS_EntityCaps implements MMM_IModelCaps {
 		case caps_PartsVisible:
 			return visible;
 		case caps_PartsStrings:
-			return texture.models[0].getCapsValue(caps_PartsStrings);
+			return ((MMM_TextureBox)textureBox[0]).models[0].getCapsValue(caps_PartsStrings);
 //			return "BustA,BustB,SideTailR,SideTailL,PonyTail,LongHair,Chignon,Skirt,InvertEyeBlink,HatWear,Gender,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32";
 		}
 		
@@ -128,6 +144,89 @@ public class EPS_EntityCaps implements MMM_IModelCaps {
 			return true;
 		}
 		return false;
+	}
+
+
+	//
+
+	@Override
+	public void setTexturePackIndex(int pColor, int[] pIndex) {
+		color = pColor;
+		textureIndex[0] = pIndex[0];
+		textureIndex[1] = pIndex[1];
+		// TODO : Clientへ値を通知
+	}
+
+	@Override
+	public void setTexturePackName(MMM_TextureBox[] pTextureBox) {
+		textureBox[0] = pTextureBox[0];
+		textureBox[1] = pTextureBox[1];
+		setTextureNames();
+	}
+
+	/**
+	 * テクスチャのファイル名を獲得
+	 */
+	protected void setTextureNames() {
+		textures[0][0] = ((MMM_TextureBox)textureBox[0]).getTextureName(color + (contract ? 0 : MMM_TextureManager.tx_wild));
+		textures[1][0] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(true, owner.getCurrentArmor(0));
+		textures[1][1] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(true, owner.getCurrentArmor(1));
+		textures[1][2] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(true, owner.getCurrentArmor(2));
+		textures[1][3] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(true, owner.getCurrentArmor(3));
+		textures[2][0] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(false, owner.getCurrentArmor(0));
+		textures[2][1] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(false, owner.getCurrentArmor(1));
+		textures[2][2] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(false, owner.getCurrentArmor(2));
+		textures[2][3] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(false, owner.getCurrentArmor(3));
+	}
+
+	@Override
+	public void setColor(int pColor) {
+		color = pColor;
+	}
+
+	@Override
+	public int getColor() {
+		return color;
+	}
+
+	@Override
+	public void setContract(boolean pContract) {
+		contract = pContract;
+	}
+
+	@Override
+	public boolean isContract() {
+		return contract;
+	}
+
+	@Override
+	public void setTextureBox(MMM_TextureBoxBase[] pTextureBox) {
+		textureBox = pTextureBox;
+	}
+
+	@Override
+	public MMM_TextureBoxBase[] getTextureBox() {
+		return textureBox;
+	}
+
+	@Override
+	public void setTextureIndex(int[] pTextureIndex) {
+		textureIndex = pTextureIndex;
+	}
+
+	@Override
+	public int[] getTextureIndex() {
+		return textureIndex;
+	}
+
+	@Override
+	public void setTextures(int pIndex, String[] pNames) {
+		textures[pIndex] = pNames;
+	}
+
+	@Override
+	public String[] getTextures(int pIndex) {
+		return textures[pIndex];
 	}
 
 }

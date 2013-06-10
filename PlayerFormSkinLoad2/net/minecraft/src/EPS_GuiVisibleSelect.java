@@ -4,10 +4,10 @@ public class EPS_GuiVisibleSelect extends GuiScreen {
 
 	public GuiScreen ownerScreen;
 	public MMM_GuiToggleButton select[] = new MMM_GuiToggleButton[32];
-	public MMM_IModelCaps target;
+	public EPS_EntityCaps target;
 
 
-	public EPS_GuiVisibleSelect(GuiScreen pOwnerScreen, MMM_IModelCaps pTarget) {
+	public EPS_GuiVisibleSelect(GuiScreen pOwnerScreen, EPS_EntityCaps pTarget) {
 		ownerScreen = pOwnerScreen;
 		target = pTarget;
 	}
@@ -30,6 +30,7 @@ public class EPS_GuiVisibleSelect extends GuiScreen {
 				}
 			}
 		}
+		buttonList.add(new MMM_GuiToggleButton(100, width - 80 * (1 + 34 / 12), (34 % 12) * 20, 80, 20, "TexSel"));
 	}
 
 	@Override
@@ -43,14 +44,18 @@ public class EPS_GuiVisibleSelect extends GuiScreen {
 	protected void actionPerformed(GuiButton par1GuiButton) {
 		if (par1GuiButton.id < 32) {
 			((MMM_GuiToggleButton)par1GuiButton).isDown = !((MMM_GuiToggleButton)par1GuiButton).isDown;
-		}
-		int lval = 0;
-		for (int li = 0; li < 32; li++) {
-			if (select[li] != null && select[li].isDown) {
-				lval |= (1 << li);
+			
+			int lval = 0;
+			for (int li = 0; li < 32; li++) {
+				if (select[li] != null && select[li].isDown) {
+					lval |= (1 << li);
+				}
 			}
+			target.setCapsValue(MMM_IModelCaps.caps_PartsVisible, lval);
 		}
-		target.setCapsValue(MMM_IModelCaps.caps_PartsVisible, lval);
+		if (par1GuiButton.id == 100) {
+			mc.displayGuiScreen(new MMM_GuiTextureSelect(this, target, 0xffff, false));
+		}
 	}
 
 }

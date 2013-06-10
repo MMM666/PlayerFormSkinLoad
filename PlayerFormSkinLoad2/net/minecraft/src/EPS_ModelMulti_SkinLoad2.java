@@ -296,12 +296,12 @@ public class EPS_ModelMulti_SkinLoad2 extends MMM_ModelMulti_Steve {
 			eyeL.showModel = eyeR.showModel = !linvBE;
 		}
 		
-		bipedRightArmF.rotateAngleX = bipedRightArm.rotateAngleX;
-		bipedRightArmF.rotateAngleY = bipedRightArm.rotateAngleY;
-		bipedRightArmF.rotateAngleZ = bipedRightArm.rotateAngleZ;
-		bipedLeftArmF.rotateAngleX = bipedLeftArm.rotateAngleX;
-		bipedLeftArmF.rotateAngleY = bipedLeftArm.rotateAngleY;
-		bipedLeftArmF.rotateAngleZ = bipedLeftArm.rotateAngleZ;
+//		bipedRightArmF.rotateAngleX = bipedRightArm.rotateAngleX;
+//		bipedRightArmF.rotateAngleY = bipedRightArm.rotateAngleY;
+//		bipedRightArmF.rotateAngleZ = bipedRightArm.rotateAngleZ;
+//		bipedLeftArmF.rotateAngleX = bipedLeftArm.rotateAngleX;
+//		bipedLeftArmF.rotateAngleY = bipedLeftArm.rotateAngleY;
+//		bipedLeftArmF.rotateAngleZ = bipedLeftArm.rotateAngleZ;
 		bipedRightLegF.rotateAngleX = bipedRightLeg.rotateAngleX;
 		bipedRightLegF.rotateAngleY = bipedRightLeg.rotateAngleY;
 		bipedRightLegF.rotateAngleZ = bipedRightLeg.rotateAngleZ;

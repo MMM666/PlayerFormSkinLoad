@@ -63,23 +63,18 @@ public class EPS_RenderPlayer extends RenderPlayer {
 		}
 		modelMain.setEntityCaps(lcaps);
 		modelFATT.setEntityCaps(lcaps);
-		MMM_TextureBox lbox = MMM_TextureManager.instance.getTextureBox("Player_SkinLoad2");
-//		MMM_TextureBox lbox = MMM_TextureManager.getTextureBox("Crafter_Steve");
-		if (lbox != null) {
-			lcaps.texture = lbox;
-			modelMain.modelInner = lbox.models[0];
-			modelMain.textureInner[0] = lbox.getTextureName(0x0c);
-			modelFATT.modelInner = lbox.models[1];
-			modelFATT.modelOuter = lbox.models[2];
-			modelFATT.textureInner[0] = lbox.getArmorTextureName(true, entityplayer.getCurrentArmor(0));
-			modelFATT.textureInner[1] = lbox.getArmorTextureName(true, entityplayer.getCurrentArmor(1));
-			modelFATT.textureInner[2] = lbox.getArmorTextureName(true, entityplayer.getCurrentArmor(2));
-			modelFATT.textureInner[3] = lbox.getArmorTextureName(true, entityplayer.getCurrentArmor(3));
-			modelFATT.textureOuter[0] = lbox.getArmorTextureName(false, entityplayer.getCurrentArmor(0));
-			modelFATT.textureOuter[1] = lbox.getArmorTextureName(false, entityplayer.getCurrentArmor(1));
-			modelFATT.textureOuter[2] = lbox.getArmorTextureName(false, entityplayer.getCurrentArmor(2));
-			modelFATT.textureOuter[3] = lbox.getArmorTextureName(false, entityplayer.getCurrentArmor(3));
-		}
+		
+		MMM_TextureBox lbox;
+		lbox = MMM_TextureManager.instance.getTextureBox(lcaps.textureBox[0]);
+		modelMain.modelInner = lbox.models[0];
+		modelMain.textureInner[0] = lcaps.textures[0][0];
+		lbox = MMM_TextureManager.instance.getTextureBox(lcaps.textureBox[1]);
+		modelFATT.modelInner = lbox.models[1];
+		modelFATT.modelOuter = lbox.models[2];
+		modelFATT.textureInner = lcaps.textures[1];
+		modelFATT.textureOuter = lcaps.textures[2];
+		// TODO:ñàéûèàóùÇæÇ∆èdÇ¢
+		lcaps.setTextureNames();
 		
 		((EPS_EntityCaps)modelMain.entityCaps).setOwner(entityplayer);
 		modelMain.setRender(this);
