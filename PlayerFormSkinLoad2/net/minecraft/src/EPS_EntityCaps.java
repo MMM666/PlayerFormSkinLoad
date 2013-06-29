@@ -169,6 +169,7 @@ public class EPS_EntityCaps implements MMM_IModelCaps, MMM_ITextureEntity {
 	 */
 	protected void setTextureNames() {
 		textures[0][0] = ((MMM_TextureBox)textureBox[0]).getTextureName(color + (contract ? 0 : MMM_TextureManager.tx_wild));
+		textures[0][1] = ((MMM_TextureBox)textureBox[0]).getTextureName(color + (contract ? MMM_TextureManager.tx_eye : MMM_TextureManager.tx_eye));
 		textures[1][0] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(true, owner.getCurrentArmor(0));
 		textures[1][1] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(true, owner.getCurrentArmor(1));
 		textures[1][2] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(true, owner.getCurrentArmor(2));

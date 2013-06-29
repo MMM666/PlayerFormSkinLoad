@@ -7,7 +7,7 @@ import org.lwjgl.opengl.GL11;
  */
 public class EPS_RenderPlayer extends RenderPlayer {
 
-	protected MMM_ModelBaseDuo modelMain;
+	protected MMM_ModelBaseSolo modelMain;
 	protected MMM_ModelBaseDuo modelFATT;
 	
 
@@ -22,10 +22,10 @@ public class EPS_RenderPlayer extends RenderPlayer {
 		modelFATT.textureInner = new String[4];
 		modelFATT.textureOuter = new String[4];
 //		modelFATT.setEntityCaps(lcaps);
-		modelMain = new MMM_ModelBaseDuo(this);
+		modelMain = new MMM_ModelBaseSolo(this);
 		modelMain.isModelAlphablend = true;
 		modelMain.capsLink = modelFATT;
-		modelMain.textureInner = new String[4];
+		modelMain.textures = new String[4];
 //		modelMain.setEntityCaps(lcaps);
 		setRenderPassModel(modelFATT);
 		
@@ -66,8 +66,8 @@ public class EPS_RenderPlayer extends RenderPlayer {
 		
 		MMM_TextureBox lbox;
 		lbox = MMM_TextureManager.instance.getTextureBox(lcaps.textureBox[0]);
-		modelMain.modelInner = lbox.models[0];
-		modelMain.textureInner[0] = lcaps.textures[0][0];
+		modelMain.model = lbox.models[0];
+		modelMain.textures = lcaps.textures[0];
 		lbox = MMM_TextureManager.instance.getTextureBox(lcaps.textureBox[1]);
 		modelFATT.modelInner = lbox.models[1];
 		modelFATT.modelOuter = lbox.models[2];
@@ -128,6 +128,6 @@ public class EPS_RenderPlayer extends RenderPlayer {
 	protected void renderSpecials(EntityPlayer par1EntityPlayer, float par2) {
 		// ハードポイントの描画
 		modelMain.renderItems(par1EntityPlayer, this);
-		MMM_Client.renderArrowsStuckInEntity(par1EntityPlayer, par2, this, modelMain.modelInner);
+		MMM_Client.renderArrowsStuckInEntity(par1EntityPlayer, par2, this, modelMain.model);
 	}
 }
