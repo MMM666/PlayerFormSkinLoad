@@ -8,7 +8,7 @@ import java.util.Random;
  * Entityのデータ読み取り用のクラス
  * 別にEntityにインターフェース付けてもOK
  */
-public class EPS_EntityCaps implements MMM_IModelCaps, MMM_ITextureEntity {
+public class EPS_EntityCaps extends MMM_EntityCaps implements MMM_ITextureEntity {
 
 	protected EntityPlayer owner;
 	private static Map<String, Integer> caps;
@@ -23,10 +23,10 @@ public class EPS_EntityCaps implements MMM_IModelCaps, MMM_ITextureEntity {
 	protected MMM_TextureBoxBase textureBox[] = new MMM_TextureBoxBase[2];
 	protected int color;
 	protected boolean contract = true;
-	protected String textures[][] = new String[][] {
-			{"", ""},
-			{"", "", "" ,""},
-			{"", "", "" ,""}
+	protected ResourceLocation textures[][] = new ResourceLocation[][] {
+			{null, null},
+			{null, null, null ,null},
+			{null, null, null ,null}
 	};
 
 
@@ -57,6 +57,7 @@ public class EPS_EntityCaps implements MMM_IModelCaps, MMM_ITextureEntity {
 	}
 
 	public EPS_EntityCaps(EntityPlayer pOwner) {
+		super(pOwner);
 		owner = pOwner;
 		textureBox[0] = textureBox[1] = MMM_TextureManager.instance.getDefaultTexture(EntityPlayer.class);
 		color = textureBox[0].getRandomContractColor(new Random());
@@ -82,7 +83,9 @@ public class EPS_EntityCaps implements MMM_IModelCaps, MMM_ITextureEntity {
 		case caps_Entity:
 			return owner;
 		case caps_health:
-			return owner.getHealth();
+			return (int)owner.func_110143_aJ();
+		case caps_healthFloat:
+			return owner.func_110143_aJ();
 		case caps_isBlocking:
 			return owner.isBlocking();
 		case caps_isOpenInv:
@@ -170,14 +173,14 @@ public class EPS_EntityCaps implements MMM_IModelCaps, MMM_ITextureEntity {
 	protected void setTextureNames() {
 		textures[0][0] = ((MMM_TextureBox)textureBox[0]).getTextureName(color + (contract ? 0 : MMM_TextureManager.tx_wild));
 		textures[0][1] = ((MMM_TextureBox)textureBox[0]).getTextureName(color + (contract ? MMM_TextureManager.tx_eye : MMM_TextureManager.tx_eye));
-		textures[1][0] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(true, owner.getCurrentArmor(0));
-		textures[1][1] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(true, owner.getCurrentArmor(1));
-		textures[1][2] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(true, owner.getCurrentArmor(2));
-		textures[1][3] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(true, owner.getCurrentArmor(3));
-		textures[2][0] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(false, owner.getCurrentArmor(0));
-		textures[2][1] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(false, owner.getCurrentArmor(1));
-		textures[2][2] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(false, owner.getCurrentArmor(2));
-		textures[2][3] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(false, owner.getCurrentArmor(3));
+		textures[1][0] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(MMM_TextureManager.tx_armor1, owner.getCurrentArmor(0));
+		textures[1][1] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(MMM_TextureManager.tx_armor1, owner.getCurrentArmor(1));
+		textures[1][2] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(MMM_TextureManager.tx_armor1, owner.getCurrentArmor(2));
+		textures[1][3] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(MMM_TextureManager.tx_armor1, owner.getCurrentArmor(3));
+		textures[2][0] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(MMM_TextureManager.tx_armor2, owner.getCurrentArmor(0));
+		textures[2][1] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(MMM_TextureManager.tx_armor2, owner.getCurrentArmor(1));
+		textures[2][2] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(MMM_TextureManager.tx_armor2, owner.getCurrentArmor(2));
+		textures[2][3] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(MMM_TextureManager.tx_armor2, owner.getCurrentArmor(3));
 	}
 
 	@Override
@@ -221,12 +224,12 @@ public class EPS_EntityCaps implements MMM_IModelCaps, MMM_ITextureEntity {
 	}
 
 	@Override
-	public void setTextures(int pIndex, String[] pNames) {
+	public void setTextures(int pIndex, ResourceLocation[] pNames) {
 		textures[pIndex] = pNames;
 	}
 
 	@Override
-	public String[] getTextures(int pIndex) {
+	public ResourceLocation[] getTextures(int pIndex) {
 		return textures[pIndex];
 	}
 

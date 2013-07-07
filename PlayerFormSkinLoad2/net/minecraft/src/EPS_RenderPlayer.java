@@ -19,13 +19,13 @@ public class EPS_RenderPlayer extends RenderPlayer {
 		modelFATT = new MMM_ModelBaseDuo(this);
 		modelFATT.isModelAlphablend = true;
 		modelFATT.isRendering = true;
-		modelFATT.textureInner = new String[4];
-		modelFATT.textureOuter = new String[4];
+		modelFATT.textureInner = new ResourceLocation[4];
+		modelFATT.textureOuter = new ResourceLocation[4];
 //		modelFATT.setEntityCaps(lcaps);
 		modelMain = new MMM_ModelBaseSolo(this);
 		modelMain.isModelAlphablend = true;
 		modelMain.capsLink = modelFATT;
-		modelMain.textures = new String[4];
+		modelMain.textures = new ResourceLocation[4];
 //		modelMain.setEntityCaps(lcaps);
 		setRenderPassModel(modelFATT);
 		
@@ -33,7 +33,7 @@ public class EPS_RenderPlayer extends RenderPlayer {
 	}
 
 	@Override
-	protected int setArmorModel(EntityPlayer par1EntityPlayer, int par2, float par3) {
+	protected int setArmorModel(AbstractClientPlayer par1EntityPlayer, int par2, float par3) {
 		// アーマーの表示設定
 		modelFATT.renderParts = par2;
 		ItemStack is = par1EntityPlayer.getCurrentArmor(par2);
@@ -46,7 +46,7 @@ public class EPS_RenderPlayer extends RenderPlayer {
 	}
 
 	@Override
-	protected void preRenderCallback(EntityLiving par1EntityLiving, float par2) {
+	protected void preRenderCallback(EntityLivingBase par1EntityLiving, float par2) {
 		Float lscale = (Float)modelMain.getCapsValue(MMM_IModelCaps.caps_ScaleFactor);
 		if (lscale != null) {
 			GL11.glScalef(lscale, lscale, lscale);
@@ -54,8 +54,8 @@ public class EPS_RenderPlayer extends RenderPlayer {
 	}
 
 	@Override
-	public void renderPlayer(EntityPlayer entityplayer, double d, double d1,
-			double d2, float f, float f1) {
+	public void renderPlayer(AbstractClientPlayer entityplayer,
+			double d, double d1, double d2, float f, float f1) {
 		
 		EPS_EntityCaps lcaps = mod_EPS_PlayerFormSkinLoad2.getEntityCaps(entityplayer);
 		if (lcaps == null) {
@@ -111,11 +111,9 @@ public class EPS_RenderPlayer extends RenderPlayer {
 	}
 
 	@Override
-	protected void renderModel(EntityLiving par1EntityLiving, float par2,
+	protected void renderModel(EntityLivingBase par1EntityLiving, float par2,
 			float par3, float par4, float par5, float par6, float par7) {
 		if (!par1EntityLiving.isInvisible()) {
-			
-			loadDownloadableImageTexture(par1EntityLiving.skinUrl, par1EntityLiving.getTexture());
 			modelMain.setArmorRendering(true);
 		} else {
 			modelMain.setArmorRendering(false);
@@ -125,7 +123,7 @@ public class EPS_RenderPlayer extends RenderPlayer {
 	}
 
 	@Override
-	protected void renderSpecials(EntityPlayer par1EntityPlayer, float par2) {
+	protected void renderSpecials(AbstractClientPlayer par1EntityPlayer, float par2) {
 		// ハードポイントの描画
 		modelMain.renderItems(par1EntityPlayer, this);
 		MMM_Client.renderArrowsStuckInEntity(par1EntityPlayer, par2, this, modelMain.model);

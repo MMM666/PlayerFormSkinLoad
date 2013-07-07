@@ -4,8 +4,6 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.client.Minecraft;
-
 public class mod_EPS_PlayerFormSkinLoad2 extends BaseMod {
 
 	@MLProp(info = "Required, when there is no PlayerAPI")
@@ -70,7 +68,7 @@ public class mod_EPS_PlayerFormSkinLoad2 extends BaseMod {
 
 	@Override
 	public String getVersion() {
-		return "1.5.2-1";
+		return "1.6.1-1";
 	}
 
 	@Override
@@ -87,7 +85,7 @@ public class mod_EPS_PlayerFormSkinLoad2 extends BaseMod {
 	@Override
 	public void load() {
 		// MMMLibのRevisionチェック
-		MMM_Helper.checkRevision("5");
+		MMM_Helper.checkRevision("1");
 		// 前提PlayerAPI
 		// オプションRenderPlayerAPI
 //		ModLoader.setInGUIHook(this, true, false);
@@ -144,7 +142,7 @@ public class mod_EPS_PlayerFormSkinLoad2 extends BaseMod {
 	public void addRenderer(Map map) {
 		// プレーヤーフォルムの置き換え
 		if (isSkinLoad) {
-			map.put(EntityPlayerSP.class, new EPS_RenderPlayer());
+			map.put(EntityPlayer.class, new EPS_RenderPlayer());
 		}
 	}
 
