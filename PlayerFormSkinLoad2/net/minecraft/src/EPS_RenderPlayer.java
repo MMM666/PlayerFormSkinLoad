@@ -54,7 +54,7 @@ public class EPS_RenderPlayer extends RenderPlayer {
 	}
 
 	@Override
-	public void renderPlayer(AbstractClientPlayer entityplayer,
+	public void func_130009_a(AbstractClientPlayer entityplayer,
 			double d, double d1, double d2, float f, float f1) {
 		
 		EPS_EntityCaps lcaps = mod_EPS_PlayerFormSkinLoad2.getEntityCaps(entityplayer);
@@ -105,7 +105,7 @@ public class EPS_RenderPlayer extends RenderPlayer {
 		modelMain.setCapsValue(MMM_IModelCaps.caps_entityIdFactor, (Float)0F);
 		modelMain.setCapsValue(MMM_IModelCaps.caps_ticksExisted, entityplayer.ticksExisted);
 		
-		super.renderPlayer(entityplayer, d, d1, d2, f, f1);
+		super.func_130009_a(entityplayer, d, d1, d2, f, f1);
 		
 		
 	}
