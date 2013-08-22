@@ -129,7 +129,7 @@ public class mod_EPS_PlayerFormSkinLoad2 extends BaseMod {
 					(new StringBuilder()).append("Toggle CreativeMode").toString());
 		}
 		String s = "key.pfVisible";
-		ModLoader.registerKey(this, new KeyBinding(s, 24), false);
+		ModLoader.registerKey(this, new KeyBinding(s, 26), false);
 		ModLoader.addLocalization(s, "Model Assemble");
 	}
 

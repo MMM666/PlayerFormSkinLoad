@@ -1,15 +1,26 @@
 package net.minecraft.src;
 
+import org.lwjgl.opengl.EXTRescaleNormal;
+import org.lwjgl.opengl.GL11;
+
 public class EPS_GuiVisibleSelect extends GuiScreen {
 
 	public GuiScreen ownerScreen;
 	public MMM_GuiToggleButton select[] = new MMM_GuiToggleButton[32];
 	public EPS_EntityCaps target;
+	public Entity owner;
+	protected float fyaw;
+	protected float fpitch;
+	protected int flastx;
+	protected int flasty;
 
 
 	public EPS_GuiVisibleSelect(GuiScreen pOwnerScreen, EPS_EntityCaps pTarget) {
 		ownerScreen = pOwnerScreen;
 		target = pTarget;
+		owner = (Entity)target.getCapsValue(MMM_IModelCaps.caps_Entity);
+		fyaw = 0F;
+		fpitch = 0F;
 	}
 
 	@Override
@@ -37,7 +48,29 @@ public class EPS_GuiVisibleSelect extends GuiScreen {
 	public void drawScreen(int par1, int par2, float par3) {
 		drawDefaultBackground();
 		super.drawScreen(par1, par2, par3);
-		drawString(fontRenderer, "Visivle", 10, 10, 0xffffff);
+		drawString(fontRenderer, "Visible", 10, 10, 0xffffff);
+		if (owner != null) {
+			GL11.glPushMatrix();
+			GL11.glEnable(EXTRescaleNormal.GL_RESCALE_NORMAL_EXT);
+			GL11.glEnable(GL11.GL_COLOR_MATERIAL);
+			GL11.glEnable(GL11.GL_DEPTH_TEST);
+			GL11.glColor3f(1.0F, 1.0F, 1.0F);
+			RenderHelper.enableGUIStandardItemLighting();
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
+//			MMM_TextureBox lbox = selectPanel.getSelectedBox();
+			GL11.glTranslatef(width / 2F - 115F, height / 2F - 30F, 100F);
+			GL11.glScalef(60F, -60F, 60F);
+			GL11.glRotatef(fpitch, 1F, 0F, 0F);
+			GL11.glRotatef(fyaw, 0F, 1F, 0F);
+			
+//			selectPanel.entity.renderYawOffset = -25F;
+//			selectPanel.entity.rotationYawHead = -10F;
+			
+			RenderManager.instance.renderEntityWithPosYaw(owner, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+			
+			GL11.glDisable(EXTRescaleNormal.GL_RESCALE_NORMAL_EXT);
+			GL11.glPopMatrix();
+		}
 	}
 
 	@Override
@@ -56,6 +89,20 @@ public class EPS_GuiVisibleSelect extends GuiScreen {
 		if (par1GuiButton.id == 100) {
 			mc.displayGuiScreen(new MMM_GuiTextureSelect(this, target, 0xffff, false));
 		}
+	}
+
+	@Override
+	protected void mouseClicked(int par1, int par2, int par3) {
+		super.mouseClicked(par1, par2, par3);
+		flastx = par1 - (int)fyaw;
+		flasty = par2 - (int)fpitch;
+	}
+
+	@Override
+	protected void mouseClickMove(int par1, int par2, int par3, long par4) {
+		super.mouseClickMove(par1, par2, par3, par4);
+		fyaw = (par1 - flastx) % 360F;
+		fpitch = (par2 - flasty) % 360F;
 	}
 
 }
