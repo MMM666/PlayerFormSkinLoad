@@ -53,6 +53,40 @@ public class EPS_RenderPlayer extends RenderPlayer {
 		}
 	}
 
+	public void setModelValues(EntityLivingBase par1EntityLiving, double par2,
+			double par4, double par6, float par8, float par9, MMM_IModelCaps pEntityCaps, MMM_ITextureEntity pTextureData) {
+		if (pTextureData != null) {
+			modelMain.model = ((MMM_TextureBox)pTextureData.getTextureBox()[0]).models[0];
+			modelMain.textures = pTextureData.getTextures(0);
+			modelFATT.modelInner = ((MMM_TextureBox)pTextureData.getTextureBox()[1]).models[1];
+			modelFATT.modelOuter = ((MMM_TextureBox)pTextureData.getTextureBox()[1]).models[2];
+			modelFATT.textureInner = pTextureData.getTextures(1);
+			modelFATT.textureOuter = pTextureData.getTextures(2);
+			modelFATT.textureInnerLight = pTextureData.getTextures(3);
+			modelFATT.textureOuterLight = pTextureData.getTextures(4);
+		}
+		modelMain.setEntityCaps(pEntityCaps);
+		modelFATT.setEntityCaps(pEntityCaps);
+		modelMain.setRender(this);
+		modelFATT.setRender(this);
+		modelMain.showAllParts();
+		modelFATT.showAllParts();
+		modelMain.isAlphablend = true;
+		modelFATT.isAlphablend = true;
+		modelMain.lighting = modelFATT.lighting = par1EntityLiving.getBrightnessForRender(par8);
+		
+		modelMain.setCapsValue(MMM_IModelCaps.caps_heldItemLeft, (Integer)0);
+		modelMain.setCapsValue(MMM_IModelCaps.caps_heldItemRight, (Integer)0);
+		modelMain.setCapsValue(MMM_IModelCaps.caps_onGround, renderSwingProgress(par1EntityLiving, par9));
+		modelMain.setCapsValue(MMM_IModelCaps.caps_isRiding, par1EntityLiving.isRiding());
+		modelMain.setCapsValue(MMM_IModelCaps.caps_isSneak, par1EntityLiving.isSneaking());
+		modelMain.setCapsValue(MMM_IModelCaps.caps_aimedBow, false);
+		modelMain.setCapsValue(MMM_IModelCaps.caps_isWait, false);
+		modelMain.setCapsValue(MMM_IModelCaps.caps_isChild, par1EntityLiving.isChild());
+		modelMain.setCapsValue(MMM_IModelCaps.caps_entityIdFactor, 0F);
+		modelMain.setCapsValue(MMM_IModelCaps.caps_ticksExisted, par1EntityLiving.ticksExisted);
+	}
+
 	@Override
 	public void func_130009_a(AbstractClientPlayer entityplayer,
 			double d, double d1, double d2, float f, float f1) {
@@ -61,25 +95,27 @@ public class EPS_RenderPlayer extends RenderPlayer {
 		if (lcaps == null) {
 			return;
 		}
-		modelMain.setEntityCaps(lcaps);
-		modelFATT.setEntityCaps(lcaps);
+		setModelValues(entityplayer, d, d1, d2, f, f1, lcaps, lcaps.textureData);
+//		modelMain.setEntityCaps(lcaps);
+//		modelFATT.setEntityCaps(lcaps);
 		
-		MMM_TextureBox lbox;
-		lbox = MMM_TextureManager.instance.getTextureBox(lcaps.textureBox[0]);
-		modelMain.model = lbox.models[0];
-		modelMain.textures = lcaps.textures[0];
-		lbox = MMM_TextureManager.instance.getTextureBox(lcaps.textureBox[1]);
-		modelFATT.modelInner = lbox.models[1];
-		modelFATT.modelOuter = lbox.models[2];
-		modelFATT.textureInner = lcaps.textures[1];
-		modelFATT.textureOuter = lcaps.textures[2];
+//		MMM_TextureBox lbox;
+//		lbox = MMM_TextureManager.instance.getTextureBox(lcaps.textureBox[0]);
+//		modelMain.model = lbox.models[0];
+//		modelMain.textures = lcaps.textures[0];
+//		lbox = MMM_TextureManager.instance.getTextureBox(lcaps.textureBox[1]);
+//		modelFATT.modelInner = lbox.models[1];
+//		modelFATT.modelOuter = lbox.models[2];
+//		modelFATT.textureInner = lcaps.textures[1];
+//		modelFATT.textureOuter = lcaps.textures[2];
 		// TODO:ñàéûèàóùÇæÇ∆èdÇ¢
 		lcaps.setTextureNames();
 		
 		((EPS_EntityCaps)modelMain.entityCaps).setOwner(entityplayer);
-		modelMain.setRender(this);
-		modelMain.isAlphablend = true;
-		modelFATT.isAlphablend = true;
+//		modelMain.setRender(this);
+//		modelMain.isAlphablend = true;
+//		modelFATT.isAlphablend = true;
+//		modelMain.lighting = modelFATT.lighting = entityplayer.getBrightnessForRender(f);
 		
 		ItemStack lis = entityplayer.getCurrentEquippedItem();
 		int lheldR = lis != null ? 1 : 0;

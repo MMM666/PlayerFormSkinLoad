@@ -17,17 +17,18 @@ public class EPS_EntityCaps extends MMM_EntityCaps implements MMM_ITextureEntity
 	protected EnumAction actions[] = new EnumAction[2];
 	protected float grounds[] = new float[] {0F, 0F};
 	protected int visible;
-//	protected MMM_TextureBox texture;
 	
-	protected int textureIndex[] = new int[] {0, 0};
-	protected MMM_TextureBoxBase textureBox[] = new MMM_TextureBoxBase[2];
-	protected int color;
-	protected boolean contract = true;
-	protected ResourceLocation textures[][] = new ResourceLocation[][] {
-			{null, null},
-			{null, null, null ,null},
-			{null, null, null ,null}
-	};
+	protected MMM_TextureData textureData;
+	
+//	protected int textureIndex[] = new int[] {0, 0};
+//	protected MMM_TextureBoxBase textureBox[] = new MMM_TextureBoxBase[2];
+//	protected int color;
+//	protected boolean contract = true;
+//	protected ResourceLocation textures[][] = new ResourceLocation[][] {
+//			{null, null},
+//			{null, null, null ,null},
+//			{null, null, null ,null}
+//	};
 
 
 
@@ -59,8 +60,14 @@ public class EPS_EntityCaps extends MMM_EntityCaps implements MMM_ITextureEntity
 	public EPS_EntityCaps(EntityPlayer pOwner) {
 		super(pOwner);
 		owner = pOwner;
-		textureBox[0] = textureBox[1] = MMM_TextureManager.instance.getDefaultTexture(EntityPlayer.class);
-		color = textureBox[0].getRandomContractColor(new Random());
+		textureData = new MMM_TextureData(pOwner, this);
+		textureData.setContract(true);
+//		textureData.setTextureInit(MMM_TextureManager.instance.getDefaultTexture(EntityPlayer.class));
+		MMM_TextureBox lbox = MMM_TextureManager.instance.getDefaultTexture(EntityPlayer.class);
+		textureData.textureBox[0] = textureData.textureBox[1] = lbox;
+		textureData.textureIndex[0] = textureData.textureIndex[1] = MMM_TextureManager.instance.getIndexTextureBoxServerIndex(lbox);
+		textureData.setColor(textureData.textureBox[0].getRandomContractColor(owner.rand));
+
 		setTextureNames();
 	}
 
@@ -132,7 +139,7 @@ public class EPS_EntityCaps extends MMM_EntityCaps implements MMM_ITextureEntity
 		case caps_PartsVisible:
 			return visible;
 		case caps_PartsStrings:
-			return ((MMM_TextureBox)textureBox[0]).models[0].getCapsValue(caps_PartsStrings);
+			return ((MMM_TextureBox)textureData.textureBox[0]).models[0].getCapsValue(caps_PartsStrings);
 //			return "BustA,BustB,SideTailR,SideTailL,PonyTail,LongHair,Chignon,Skirt,InvertEyeBlink,HatWear,Gender,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32";
 		}
 		
@@ -154,16 +161,13 @@ public class EPS_EntityCaps extends MMM_EntityCaps implements MMM_ITextureEntity
 
 	@Override
 	public void setTexturePackIndex(int pColor, int[] pIndex) {
-		color = pColor;
-		textureIndex[0] = pIndex[0];
-		textureIndex[1] = pIndex[1];
 		// TODO : Clientへ値を通知
+		textureData.setTexturePackIndex(pColor, pIndex);
 	}
 
 	@Override
 	public void setTexturePackName(MMM_TextureBox[] pTextureBox) {
-		textureBox[0] = pTextureBox[0];
-		textureBox[1] = pTextureBox[1];
+		textureData.setTexturePackName(pTextureBox);
 		setTextureNames();
 	}
 
@@ -171,66 +175,57 @@ public class EPS_EntityCaps extends MMM_EntityCaps implements MMM_ITextureEntity
 	 * テクスチャのファイル名を獲得
 	 */
 	protected void setTextureNames() {
-		textures[0][0] = ((MMM_TextureBox)textureBox[0]).getTextureName(color + (contract ? 0 : MMM_TextureManager.tx_wild));
-		textures[0][1] = ((MMM_TextureBox)textureBox[0]).getTextureName(color + (contract ? MMM_TextureManager.tx_eye : MMM_TextureManager.tx_eye));
-		textures[1][0] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(MMM_TextureManager.tx_armor1, owner.getCurrentArmor(0));
-		textures[1][1] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(MMM_TextureManager.tx_armor1, owner.getCurrentArmor(1));
-		textures[1][2] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(MMM_TextureManager.tx_armor1, owner.getCurrentArmor(2));
-		textures[1][3] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(MMM_TextureManager.tx_armor1, owner.getCurrentArmor(3));
-		textures[2][0] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(MMM_TextureManager.tx_armor2, owner.getCurrentArmor(0));
-		textures[2][1] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(MMM_TextureManager.tx_armor2, owner.getCurrentArmor(1));
-		textures[2][2] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(MMM_TextureManager.tx_armor2, owner.getCurrentArmor(2));
-		textures[2][3] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(MMM_TextureManager.tx_armor2, owner.getCurrentArmor(3));
+		textureData.setTextureNames();
 	}
 
 	@Override
 	public void setColor(int pColor) {
-		color = pColor;
+		textureData.setColor(pColor);
 	}
 
 	@Override
 	public int getColor() {
-		return color;
+		return textureData.getColor();
 	}
 
 	@Override
 	public void setContract(boolean pContract) {
-		contract = pContract;
+		textureData.setContract(pContract);
 	}
 
 	@Override
 	public boolean isContract() {
-		return contract;
+		return textureData.isContract();
 	}
 
 	@Override
 	public void setTextureBox(MMM_TextureBoxBase[] pTextureBox) {
-		textureBox = pTextureBox;
+		textureData.setTextureBox(pTextureBox);
 	}
 
 	@Override
 	public MMM_TextureBoxBase[] getTextureBox() {
-		return textureBox;
+		return textureData.getTextureBox();
 	}
 
 	@Override
 	public void setTextureIndex(int[] pTextureIndex) {
-		textureIndex = pTextureIndex;
+		textureData.setTextureIndex(pTextureIndex);
 	}
 
 	@Override
 	public int[] getTextureIndex() {
-		return textureIndex;
+		return textureData.getTextureIndex();
 	}
 
 	@Override
 	public void setTextures(int pIndex, ResourceLocation[] pNames) {
-		textures[pIndex] = pNames;
+		textureData.setTextures(pIndex, pNames);
 	}
 
 	@Override
 	public ResourceLocation[] getTextures(int pIndex) {
-		return textures[pIndex];
+		return textureData.getTextures(pIndex);
 	}
 
 }
