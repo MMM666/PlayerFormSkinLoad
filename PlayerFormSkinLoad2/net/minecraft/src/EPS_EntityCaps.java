@@ -228,4 +228,9 @@ public class EPS_EntityCaps extends MMM_EntityCaps implements MMM_ITextureEntity
 		return textureData.getTextures(pIndex);
 	}
 
+	@Override
+	public MMM_TextureData getTextureData() {
+		return textureData;
+	}
+
 }

@@ -53,8 +53,9 @@ public class EPS_RenderPlayer extends RenderPlayer {
 		}
 	}
 
-	public void setModelValues(EntityLivingBase par1EntityLiving, double par2,
-			double par4, double par6, float par8, float par9, MMM_IModelCaps pEntityCaps, MMM_ITextureEntity pTextureData) {
+	public void setModelValues(EntityLivingBase par1EntityLiving,
+			double par2, double par4, double par6, float par8, float par9,
+			MMM_IModelCaps pEntityCaps, MMM_ITextureEntity pTextureData) {
 		if (pTextureData != null) {
 			modelMain.model = ((MMM_TextureBox)pTextureData.getTextureBox()[0]).models[0];
 			modelMain.textures = pTextureData.getTextures(0);
@@ -95,7 +96,7 @@ public class EPS_RenderPlayer extends RenderPlayer {
 		if (lcaps == null) {
 			return;
 		}
-		setModelValues(entityplayer, d, d1, d2, f, f1, lcaps, lcaps.textureData);
+		setModelValues(entityplayer, d, d1, d2, f, f1, lcaps, lcaps);
 //		modelMain.setEntityCaps(lcaps);
 //		modelFATT.setEntityCaps(lcaps);
 		
