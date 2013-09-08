@@ -68,7 +68,7 @@ public class mod_EPS_PlayerFormSkinLoad2 extends BaseMod {
 
 	@Override
 	public String getVersion() {
-		return "1.6.2-1";
+		return "1.6.2-1x";
 	}
 
 	@Override
@@ -85,10 +85,14 @@ public class mod_EPS_PlayerFormSkinLoad2 extends BaseMod {
 	@Override
 	public void load() {
 		// MMMLibのRevisionチェック
-		MMM_Helper.checkRevision("1");
+		MMM_Helper.checkRevision("5");
+		MMM_FileManager.getModFile("PlayerForm", "PlayerForm");
+		MMM_TextureManager.instance.addSearch("PlayerForm", "/assets/minecraft/textures/entity/ModelMulti/", "ModelMulti_");
+		
 		// 前提PlayerAPI
 		// オプションRenderPlayerAPI
 //		ModLoader.setInGUIHook(this, true, false);
+		
 		
 		// PlayerAPI判定
 		if (isPhysical) {

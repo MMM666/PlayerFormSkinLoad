@@ -1,4 +1,4 @@
-プレーヤのモデルをSkinLoad互換に置換えるMOD PlayerFormSkinLoad2 1.2.5 Rev1
+プレーヤのモデルをSkinLoad互換に置換えるMOD PlayerFormSkinLoad2 1.6.2 Rev1
 
 
 プレーヤーモデルをおこたさん作成「PlayerFormSkinLoadPlus」の互換モデルに置き換えるMODです。
@@ -23,6 +23,7 @@ BurningPlayerを取り込みました。
 	AudioMODが導入されていると自分で用意した音声が使用できます。
 	「SkinLoad」仕様のテクスチャを用意し、PlayerFormSkinLoad2.zipに追加するか、
 	テクスチャパックに追加してcfgファイルの「useTexture=/mob/char_skin.png」の部分を適宜書き換えてください。
+	デフォルトでは「[」キーでGUIが開きます。
 
 
 
