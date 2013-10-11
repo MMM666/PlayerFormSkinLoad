@@ -17,7 +17,7 @@ public class EPS_GuiVisibleSelect extends MMM_GuiVisibleSelect {
 	@Override
 	protected void actionPerformed(GuiButton par1GuiButton) {
 		if (par1GuiButton.id == 200) {
-			mc.displayGuiScreen(new MMM_GuiTextureSelect(this, target, 0xffff, false));
+			mc.displayGuiScreen(new MMM_GuiTextureSelect(this, (MMM_ITextureEntity)target, 0xffff, false));
 		}
 		super.actionPerformed(par1GuiButton);
 	}

@@ -36,6 +36,7 @@ public class EPS_RenderPlayer extends RenderPlayer {
 	protected int setArmorModel(AbstractClientPlayer par1EntityPlayer, int par2, float par3) {
 		// アーマーの表示設定
 		modelFATT.renderParts = par2;
+		modelFATT.renderCount = 0;
 		ItemStack is = par1EntityPlayer.getCurrentArmor(par2);
 		if (is != null && is.stackSize > 0) {
 			modelFATT.showArmorParts(par2);
@@ -74,6 +75,8 @@ public class EPS_RenderPlayer extends RenderPlayer {
 		modelFATT.showAllParts();
 		modelMain.isAlphablend = true;
 		modelFATT.isAlphablend = true;
+		modelMain.renderCount = 0;
+		modelFATT.renderCount = 0;
 		modelMain.lighting = modelFATT.lighting = par1EntityLiving.getBrightnessForRender(par8);
 		
 		modelMain.setCapsValue(MMM_IModelCaps.caps_heldItemLeft, (Integer)0);
@@ -165,4 +168,19 @@ public class EPS_RenderPlayer extends RenderPlayer {
 		modelMain.renderItems(par1EntityPlayer, this);
 		MMM_Client.renderArrowsStuckInEntity(par1EntityPlayer, par2, this, modelMain.model);
 	}
+
+	@Override
+	protected int getColorMultiplier(EntityLivingBase par1EntityLivingBase,
+			float par2, float par3) {
+		modelFATT.renderCount = 16;
+		return super.getColorMultiplier(par1EntityLivingBase, par2, par3);
+	}
+
+	@Override
+	protected int inheritRenderPass(EntityLivingBase par1EntityLivingBase,
+			int par2, float par3) {
+		modelFATT.renderCount = 16;
+		return super.inheritRenderPass(par1EntityLivingBase, par2, par3);
+	}
+
 }

@@ -55,6 +55,7 @@ public class EPS_EntityCaps extends MMM_EntityCaps implements MMM_ITextureEntity
 		caps.put("health", caps_health);
 		caps.put("currentArmor", caps_currentArmor);
 		caps.put("currentEquippedItem", caps_currentEquippedItem);
+		caps.put("TextureEntity", caps_TextureEntity);
 	}
 
 	public EPS_EntityCaps(EntityPlayer pOwner) {
@@ -141,6 +142,8 @@ public class EPS_EntityCaps extends MMM_EntityCaps implements MMM_ITextureEntity
 		case caps_PartsStrings:
 			return ((MMM_TextureBox)textureData.textureBox[0]).models[0].getCapsValue(caps_PartsStrings);
 //			return "BustA,BustB,SideTailR,SideTailL,PonyTail,LongHair,Chignon,Skirt,InvertEyeBlink,HatWear,Gender,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32";
+		case caps_TextureEntity:
+			return this;
 		}
 		
 		return null;
